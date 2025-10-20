@@ -22,7 +22,7 @@ export default function Home() {
         selectedTool={selectedTool}
       />
 
-      <AdPanel />
+      <AdPanel elements={elements} />
       <LayersContainer
         elements={elements}
         setElements={setElements}

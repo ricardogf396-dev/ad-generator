@@ -33,6 +33,22 @@ export default function AdComponents({
 }: AdComponentsProps) {
   const [showFigures, setShowFigures] = useState(false);
   const figuresRef = useRef<HTMLDivElement | null>(null);
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
+
+  const triggerFileDialog = () => {
+    fileInputRef.current?.click();
+  };
+
+  const onPickImage = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0] || null;
+    if (!file) return;
+    // Disparamos evento global (Canvas lo escucha)
+    window.dispatchEvent(
+      new CustomEvent("tibrio:add-image", { detail: { file } })
+    );
+    // Limpia para permitir volver a elegir el mismo archivo si se desea
+    e.currentTarget.value = "";
+  };
 
   useEffect(() => {
     if (!showFigures) return;
@@ -91,6 +107,7 @@ export default function AdComponents({
                 : ""
             }`}
             onClick={() => setShowFigures(!showFigures)}
+            title="Add figure"
           >
             <Square />
             {showFigures && (
@@ -147,6 +164,7 @@ export default function AdComponents({
             size="icon"
             aria-label="Line"
             className="cursor-pointer"
+            title="Add line"
           >
             <Minus />
           </Button>
@@ -154,7 +172,11 @@ export default function AdComponents({
             variant="ghost"
             size="icon"
             aria-label="Text"
-            className="cursor-pointer"
+            className={`cursor-pointer ${
+              selectedTool === "text" ? "bg-blue-100" : ""
+            }`}
+            onClick={() => onToolSelect("text")}
+            title="Add Text"
           >
             <Type />
           </Button>
@@ -162,10 +184,20 @@ export default function AdComponents({
             variant="ghost"
             size="icon"
             aria-label="Image"
+            onClick={triggerFileDialog}
             className="cursor-pointer"
+            title="Add Image"
           >
             <ImageLucide />
           </Button>
+
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept="image/*"
+            className="hidden"
+            onChange={onPickImage}
+          />
           <NavigationMenu>
             <NavigationMenuList>
               <NavigationMenuItem>

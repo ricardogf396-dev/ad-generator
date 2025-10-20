@@ -18,7 +18,16 @@ interface Element {
   fillOpacity?: number;
   strokeColor?: string;
   strokeWidth?: number;
+  strokeDasharray?: string;
   locked?: boolean;
+  text?: string;
+  fontFamily?: string;
+  fontSize?: number;
+  fontWeight?: string;
+  textAlign?: string;
+  textColor?: string;
+  textOpacity?: number;
+  extraId?: string;
 }
 
 interface LayersContainerProps {
@@ -37,26 +46,26 @@ export default function LayersContainer({
   const [editingId, setEditingId] = useState<string | null>(null);
   const [draggedIndex, setDraggedIndex] = useState<number | null>(null);
 
-  // Obtener nombre del elemento
+  // Get element name
   const getElementName = (element: Element, index: number) => {
     if (element.name) return element.name;
     const typeNames: { [key: string]: string } = {
-      square: "Cuadrado",
-      circle: "Círculo",
-      star: "Estrella",
-      triangle: "Triángulo",
+      square: "Square",
+      circle: "Circle",
+      star: "Star",
+      triangle: "Triangle",
     };
     return `${typeNames[element.type] || element.type} ${index + 1}`;
   };
 
-  // Cambiar nombre
+  // Change name
   const handleNameChange = (id: string, newName: string) => {
     setElements(
       elements.map((el) => (el.id === id ? { ...el, name: newName } : el))
     );
   };
 
-  // Toggle visibilidad
+  //  Visibility Toggle
   const toggleVisibility = (id: string) => {
     setElements(
       elements.map((el) =>
@@ -67,7 +76,7 @@ export default function LayersContainer({
     );
   };
 
-  // Eliminar elemento
+  // Delete element
   const deleteElement = (id: string) => {
     setElements(elements.filter((el) => el.id !== id));
     if (selectedElement === id) {
@@ -97,18 +106,17 @@ export default function LayersContainer({
     setDraggedIndex(null);
   };
 
-  // Revertir orden para mostrar (último elemento = arriba)
   const reversedElements = [...elements].reverse();
 
   return (
-    <div className="absolute left-10 bottom-10 bg-white border border-gray-200 rounded-md shadow-md min-h-[300px] max-h-[600px] overflow-y-auto w-64 flex flex-col gap-1">
+    <div className="absolute left-10 bg-white border border-gray-200 rounded-md shadow-md min-h-[300px] max-h-[600px] overflow-y-auto w-64 flex flex-col gap-1">
       <p className="font-medium text-sm px-3 py-2 border-b border-gray-200">
         Layers
       </p>
       <div className="flex flex-col overflow-y-auto p-1">
         {reversedElements.length === 0 ? (
           <div className="text-sm text-gray-400 text-center py-8">
-            No hay elementos
+            No elements
           </div>
         ) : (
           reversedElements.map((element, displayIndex) => {

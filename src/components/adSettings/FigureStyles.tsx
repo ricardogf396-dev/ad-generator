@@ -14,6 +14,7 @@ import {
   Link,
   Link2Off,
   Shapes,
+  RotateCw,
 } from "lucide-react";
 import { useEffect, useState } from "react";
 
@@ -32,6 +33,7 @@ interface Element {
   fillOpacity?: number;
   strokeColor?: string;
   strokeWidth?: number;
+  strokeDasharray?: string;
   locked?: boolean;
 }
 
@@ -175,12 +177,28 @@ export default function FigureStyles({
             <Label className="flex items-center gap-2">
               <Brush className="h-4 w-4" /> Stroke color
             </Label>
-            <Input
-              type="color"
-              value={element.strokeColor || "#000000"}
-              onChange={(e) => updateElement({ strokeColor: e.target.value })}
-              className="h-9 p-1"
-            />
+            <div className="flex gap-2">
+              <Input
+                type="color"
+                value={
+                  element.strokeColor === "none"
+                    ? "#000000"
+                    : element.strokeColor || "#000000"
+                }
+                onChange={(e) => updateElement({ strokeColor: e.target.value })}
+                className="h-9 p-1 flex-1"
+              />
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() =>
+                  updateElement({ strokeColor: "none", strokeWidth: 0 })
+                }
+                className={element.strokeColor === "none" ? "bg-gray-100" : ""}
+              >
+                None
+              </Button>
+            </div>
           </div>
 
           <div className="space-y-2">
@@ -189,7 +207,7 @@ export default function FigureStyles({
             </Label>
             <div className="flex items-center gap-3 min-w-0">
               <Slider
-                value={[element.strokeWidth || 2]}
+                value={[element.strokeWidth || 0]}
                 onValueChange={(value) =>
                   updateElement({ strokeWidth: value[0] })
                 }
@@ -201,12 +219,67 @@ export default function FigureStyles({
               <Input
                 className="w-20 shrink-0"
                 type="number"
-                value={element.strokeWidth || 2}
+                value={element.strokeWidth || 0}
                 onChange={(e) =>
                   updateElement({ strokeWidth: parseInt(e.target.value) || 0 })
                 }
               />
             </div>
+          </div>
+
+          <div className="space-y-2">
+            <Label className="flex items-center gap-2">
+              <Brush className="h-4 w-4" /> Stroke style
+            </Label>
+            <div className="grid grid-cols-2 gap-2">
+              <Button
+                variant={
+                  element.strokeDasharray === "none" ? "default" : "outline"
+                }
+                size="sm"
+                onClick={() => updateElement({ strokeDasharray: "none" })}
+              >
+                Solid
+              </Button>
+              <Button
+                variant={
+                  element.strokeDasharray === "5,5" ? "default" : "outline"
+                }
+                size="sm"
+                onClick={() => updateElement({ strokeDasharray: "5,5" })}
+              >
+                Dashed
+              </Button>
+              <Button
+                variant={
+                  element.strokeDasharray === "2,2" ? "default" : "outline"
+                }
+                size="sm"
+                onClick={() => updateElement({ strokeDasharray: "2,2" })}
+              >
+                Dotted
+              </Button>
+              <Button
+                variant={
+                  element.strokeDasharray === "10,5,2,5" ? "default" : "outline"
+                }
+                size="sm"
+                onClick={() => updateElement({ strokeDasharray: "10,5,2,5" })}
+              >
+                Custom
+              </Button>
+            </div>
+            {element.strokeDasharray && element.strokeDasharray !== "none" && (
+              <Input
+                className="w-full"
+                type="text"
+                placeholder="e.g., 5,5 or 10,5,2,5"
+                value={element.strokeDasharray}
+                onChange={(e) =>
+                  updateElement({ strokeDasharray: e.target.value })
+                }
+              />
+            )}
           </div>
         </div>
 

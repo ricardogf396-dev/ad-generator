@@ -9,6 +9,7 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@next/font": "^14.2.15",
     "@radix-ui/react-label": "^2.1.7",
     "@radix-ui/react-navigation-menu": "^1.2.14",
     "@radix-ui/react-select": "^2.2.6",
@@ -21,12 +22,14 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "gsap": "^3.13.0",
+    "keycon": "^1.4.0",
     "lucide-react": "^0.545.0",
     "next": "15.5.4",
     "react": "19.1.0",
     "react-dom": "19.1.0",
     "react-moveable": "^0.56.0",
-    "tailwind-merge": "^3.3.1"
+    "tailwind-merge": "^3.3.1",
+    "webfontloader": "^1.6.28"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
@@ -34,6 +37,7 @@
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "@types/webfontloader": "^1.6.38",
     "eslint": "^9",
     "eslint-config-next": "15.5.4",
     "tailwindcss": "^4",
